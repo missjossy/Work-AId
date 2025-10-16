@@ -1,0 +1,11 @@
+RETENTION_STATUS,LOAN_FREQUENCY_SEGMENT,SUM(CLIENT_COUNT)
+churned,high_frequency,2337
+churned,low_frequency,156
+churned,medium_frequency,183
+churned,no_loans,586
+churned,single_loan,105
+retained,high_frequency,7019
+retained,low_frequency,1160
+retained,medium_frequency,1307
+retained,no_loans,7433
+retained,single_loan,676

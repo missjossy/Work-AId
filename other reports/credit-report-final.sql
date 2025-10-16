@@ -1,0 +1,367 @@
+WITH custom_field_keys AS (
+    -- Pre-fetch custom field keys to eliminate repeated subqueries
+    SELECT id, encodedkey
+    FROM mambu.customfield
+    WHERE id IN ('marital_status', 'location', 'home_owner', 'employment',
+                 'employer_name', 'occupation', 'position', 'total_monthly_income')
+),
+recovered as (
+SELECT recentmonth.loanid,
+ recentmonth.entrydate lastpaiddate,
+ recentmonth.amount lastpaidamount,
+ (todate.cr_amount - todate.dr_amount) totalpaid,
+ least((todate.cr_amount - todate.dr_amount) + writeoff.amount,0) revised_writeoff_amount
+FROM
+  (SELECT  entrydate,
+         amount,
+         right(trim(replace(notes, 'n', '')),7) loanid,
+          row_number() OVER (PARTITION BY loanid
+                             ORDER BY entrydate DESC) rid
+   FROM mambu.gljournalentry gle
+   LEFT JOIN mambu.glaccount gla ON gle.glaccount_encodedkey_oid = gla.encodedkey
+   WHERE gla.name = 'Recovery from Write-Off'
+     AND gle."type" = 'CREDIT'
+     AND gle.creationdate BETWEEN '2020-06-30' AND current_date
+   ORDER BY 1 DESC) recentmonth
+LEFT JOIN
+  (SELECT right(trim(replace(notes, 'n', '')),7) loanid,
+          nvl(sum(CASE
+                      WHEN gle."type" = 'CREDIT' THEN amount
+                  END),0.00) cr_amount,
+          nvl(sum(CASE
+                      WHEN gle."type" = 'DEBIT' THEN amount
+                  END),0.00) dr_amount
+   FROM mambu.gljournalentry gle
+   LEFT JOIN mambu.glaccount gla ON gle.glaccount_encodedkey_oid = gla.encodedkey
+   WHERE gla.name = 'Recovery from Write-Off'
+     AND gle."type" IN ('CREDIT',
+                      'DEBIT')
+   GROUP BY 1) todate ON todate.loanid = recentmonth.loanid
+LEFT JOIN
+  (SELECT l.id,
+          lt.amount
+   FROM mambu.loanaccount l,
+        mambu.loantransaction lt
+   WHERE lt.parentaccountkey = l.encodedkey
+     AND lt."type" = 'WRITE_OFF'
+     AND l.accountstate = 'CLOSED_WRITTEN_OFF'
+     AND lt.reversaltransactionkey IS NULL) writeoff on writeoff.id = recentmonth.loanid
+WHERE rid = 1
+AND least((todate.cr_amount - todate.dr_amount) + writeoff.amount,0) IS NOT NULL
+GROUP BY 1,
+         2,
+         3,
+         4,
+         5
+HAVING totalpaid > 0
+),
+
+base_loans AS (
+    -- Filter loans early to reduce dataset size
+    SELECT li.*, case when accountstate = 'ACTIVE' then coalesce(rp.last_transaction_date, disbursementdate)
+    when   accountstate = 'ACTIVE_IN_ARREARS' then coalesce(rp.last_transaction_date, li.last_expected_repayment)
+    when   accountstate = 'CLOSED_WRITTEN_OFF' then coalesce(je.last_payment_date, rp.last_transaction_date, disbursementdate)
+    when   accountstate = 'CLOSED' then rp.last_transaction_date
+    else null end as last_modified_date
+    FROM ml.loan_info_tbl li
+    LEFT JOIN (
+        SELECT right(trim(replace(notes, 'n', '')),7) loanid, MAX(date(gle.entrydate)) as last_payment_date,
+             nvl(sum(CASE
+                         WHEN gle."type" = 'CREDIT' THEN amount
+                     END),0.00) cr_amount,
+             nvl(sum(CASE
+                         WHEN gle."type" = 'DEBIT' THEN amount
+                     END),0.00) dr_amount --, gle.*
+      FROM mambu.gljournalentry gle
+      LEFT JOIN mambu.glaccount gla ON gle.glaccount_encodedkey_oid = gla.encodedkey
+      WHERE gla.name = 'Recovery from Write-Off'
+        AND gle."type" IN ('CREDIT',
+                           'DEBIT')
+        GROUP BY 1
+    ) je on li.loan_id = je.loanid
+    left join (
+        select loan_id, max(transaction_date) as last_transaction_date
+        from ml.repayment_transactions_extended
+        where repayment_due_date > current_date()
+        group by 1  
+    ) rp on rp.loan_id =li.loan_id
+    WHERE accountstate IN ('ACTIVE', 'ACTIVE_IN_ARREARS', 'CLOSED_WRITTEN_OFF', 'CLOSED')
+    
+      --AND creationdate < DATE_TRUNC('month', CURRENT_DATE())
+),
+client_identifications AS (
+    -- Consolidate all identification documents into single subquery
+    SELECT
+        clientkey,
+        MAX(CASE WHEN documenttype = 'Voter ID' THEN documentid END) as voter_id,
+        MAX(CASE WHEN documenttype IN ('National ID', 'Ghana Card ID') THEN documentid END) as nat_id,
+        MAX(CASE WHEN documenttype = 'Driver''s License' THEN documentid END) as driver_id,
+        MAX(CASE WHEN documenttype = 'Passport' THEN documentid END) as passport_id,
+        MAX(CASE WHEN documenttype = 'NHIA Membership' THEN documentid END) as nhia_id
+    FROM mambu.identificationdocument
+    WHERE documenttype IN ('Voter ID', 'National ID', 'Ghana Card ID', 'Driver''s License', 'Passport', 'NHIA Membership')
+    GROUP BY clientkey
+),
+custom_field_values AS (
+    -- Consolidate all custom field values into single query with pivot
+    SELECT
+        cfv.PARENTKEY,
+        MAX(CASE WHEN cf.id = 'marital_status' THEN cfv.value END) as marital_status_value,
+        MAX(CASE WHEN cf.id = 'location' THEN cfv.value END) as location_value,
+        MAX(CASE WHEN cf.id = 'home_owner' THEN cfv.value END) as home_owner_value,
+        MAX(CASE WHEN cf.id = 'employment' THEN cfv.value END) as employment_value,
+        MAX(CASE WHEN cf.id = 'employer_name' THEN cfv.value END) as employer_name_value,
+        MAX(CASE WHEN cf.id = 'occupation' THEN cfv.value END) as occupation_value,
+        MAX(CASE WHEN cf.id = 'position' THEN cfv.value END) as position_value,
+        MAX(CASE WHEN cf.id = 'total_monthly_income' THEN cfv.value END) as income_value
+    FROM mambu.customfieldvalue cfv
+    INNER JOIN custom_field_keys cf ON cfv.CUSTOMFIELDKEY = cf.encodedkey
+    GROUP BY cfv.PARENTKEY
+),
+employment_classifications AS (
+    -- Pre-calculate employment type mappings
+    SELECT
+        client_key,
+        CASE
+            WHEN custom_fields:employment = 'Salaried' THEN 101
+            WHEN custom_fields:employment = 'Full-time Student' THEN 103
+            WHEN custom_fields:employment = 'Contracted' THEN 104
+            WHEN custom_fields:employment = 'Self-Employed' THEN 104
+            WHEN custom_fields:employment = '' THEN 102
+            ELSE 104
+        END as emp_type
+    FROM mambu.client_extra_values
+),
+income_classifications AS (
+    -- Pre-calculate income mappings
+    SELECT
+        PARENTKEY,
+        CASE
+            WHEN income_value IS NULL THEN 'Not available'
+            WHEN income_value = 'Below 350 GHS' THEN '350'
+            WHEN income_value = '351 GHS - 700 GHS' THEN '700'
+            WHEN income_value = '701 GHS - 1000 GHS' THEN '1000'
+            WHEN income_value = '1001 GHS - 1400 GHS' THEN '1400'
+            WHEN income_value = '1401 GHS - 1800 GHS' THEN '1800'
+            WHEN income_value = 'Above 1800 GHS' THEN '2000'
+            ELSE NULL
+        END as income_mapped
+    FROM custom_field_values
+)
+
+SELECT
+    'D' AS "Data",
+    '0' AS "CorrectionIndicator",
+    ml.loan_id AS "FacilityAccNum",
+    ml.lastmodifieddate,
+    c.id AS "CustomerID",
+    '1' AS "BranchCode",
+    ci.nat_id as "NatIdNum",
+    CASE WHEN ci.nat_id is null then ci.voter_id else null end as "VotersIDNum",
+    case when ci.nat_id is null and ci.voter_id is null then ci.driver_id else null end as "DriverLicNum",
+    case when ci.nat_id is null and ci.voter_id is null and ci.driver_id is null then ci.passport_id else null end as "PassportNum",
+    NULL as "SSNum",
+    NULL as "EzwichNum",
+    IFF(ci.nhia_id IS NOT NULL, 'NHIS', NULL) as "OtherID",
+    case when ci.nat_id is null and ci.voter_id is null and ci.driver_id is null and ci.passport_id is null then ci.nhia_id else null end as "OtherIDNum",
+    NULL as "TINum",
+    LEFT(c.gender, 1) as "Gender",
+    LEFT(cfv.marital_status_value, 1) as "MaritalStatus",
+    'GHA' as "Nationality",
+    TO_CHAR(c.birthdate,'YYYYMMDD') as "DOB",
+    '' as "Title",
+    c.lastName as "Surname",
+    c.firstName as "FirstName",
+    c.middleName as "MiddleNames",
+    '' as "PrevName",
+    '' as "ALIAS",
+    '' as "ProofOfAddType",
+    '' as "ProofOfAddNum",
+    REPLACE(a.line1,'|',',') as "CurResAddr1",
+    cfv.location_value as "CurResAddr2",
+    a."region" as "CurResAddr3",
+    '' as "CurResAddr4",
+    '' as "CurResAddrPostalCode",
+    '' as "DateMovedCurrRes",
+    '' as "PrevResAddr1",
+    '' as "PrevResAddr2",
+    '' as "PrevResAddr3",
+    '' as "PrevResAddr4",
+    '' as "PrevResAddrPostalCode",
+    CASE
+        WHEN cfv.home_owner_value = 'You' THEN 'O'
+        WHEN cfv.home_owner_value = 'Family' THEN 'F'
+        WHEN cfv.home_owner_value IS NULL THEN ''
+        ELSE 'T'
+    END as "OwnerOrTenant",
+    REPLACE(a.line2,'|',',') as "PostAddrLine1",
+    '' as "PostAddrLine2",
+    '' as "PostAddrLine3",
+    '' as "PostAddrLine4",
+    '' as "PostalAddPostCode",
+    '' as "EmailAddress",
+    '' as "HomeTel",
+    c.mobilePhone1::text as "MobileTel1",
+    '' as "MobileTel2",
+    '' as "WorkTel",
+    '' as "NumOfDependants",
+    ec.emp_type as "EmpType",
+    '' as "EmpPayrollNum",
+    '' as "Paypoint",
+    cfv.employer_name_value as "EmpName",
+    '' as "EmpAddr1",
+    '' as "EmpAddr2",
+    '' as "EmpAddr3",
+    '' as "EmpAddr4",
+    '' as "EmpAddrPostalCode",
+    '' as "DateOfEmp",
+    COALESCE(cfv.occupation_value, cfv.position_value, 'Not available') as "occupation",
+    ic.income_mapped as "income",
+    'GHS' as "IncomeCurrency",
+    'S' as "JointOrSoleAcc",
+    '1' as "NoParticipantsInAcc",
+    '' as "OldCustomerID",
+    '' as "OldAccountNum",
+    '' as "OldSRN",
+    '' as "OldBranchCode",
+    '119' as "CreditFacilityType",
+    'P' as "PurposeOfFacility",
+    DATEDIFF('day', ml.disbursementdate, ml.last_expected_repayment) as "FacilityTerm",
+    '' as "DefPaymentStartDate",
+    'GHS' as "AmountCurrency",
+    ml.loanamount as "FacilityAmount",
+    TO_CHAR(ml.disbursementdate,'YYYYMMDD') as "DisbursementDate",
+    ml.loanamount as "DisbursementAmt",
+    TO_CHAR(ml.last_expected_repayment,'YYYYMMDD') as "MaturityDate",
+    ROUND(nr.schd_instal_amount) as "SchdInstalAmount",
+    IFF(ml.repaymentinstallments > 1, '12', '18') as "RepaymentFreq",
+    CASE 
+        WHEN abs(revised_writeoff_amount) < 10 THEN CAST(ROUND(recovered.lastpaidamount) AS INT) 
+        ELSE CAST(ROUND(ml.total_repayment_amount) AS INT) 
+        END AS "LastPaymentAmount",
+    -- CAST(ROUND(ml.total_repayment_amount) AS INT) AS "LastPaymentAmount",
+    TO_CHAR(ml.last_repayment_date,'YYYYMMDD') as "LastPaymentDate",
+    TO_CHAR(r.next_due_repayment, 'YYYYMMDD') as "NextPaymentDate",
+    ml.current_balance as "CurBal",
+    'D' as "CurBalIndicator",
+    CASE
+              WHEN (ml.accountstate = 'CLOSED_WRITTEN_OFF' AND abs(revised_writeoff_amount) > 10) THEN 'E'
+              WHEN ml.accountstate = 'ACTIVE' THEN 'A' 
+              WHEN ml.accountstate = 'ACTIVE_IN_ARREARS' THEN 'C'
+              ELSE ''  END as "AssetClassification",
+    --asc.amount_in_arrears as "AmountInArrears",
+    IFF(ml.accountState = 'ACTIVE_IN_ARREARS', ml.current_balance, 0) as "AmountInArrears",
+    TO_CHAR(ml.lastSetToArrearsDate,'YYYYMMDD') as "ArrearsStartDate",
+    IFF(ml.accountState = 'ACTIVE_IN_ARREARS', DATEDIFF('day', ml.lastSetToArrearsDate,CURRENT_DATE()), NULL) as "NDIA",
+    '' as "PaymentHistoryProfile",
+    CAST(ROUND(r.amt_overdue1_30d) AS INT) AS "AmtOverdue1to30days",
+    CAST(ROUND(r.amt_overdue31_60d) AS INT) AS "AmtOverdue31to60days",
+    CAST(ROUND(r.amt_overdue61_90d) AS INT) AS "AmtOverdue61to90days",
+    CAST(ROUND(r.amt_overdue91_120d) AS INT) AS "AmtOverdue91to120days",
+    CAST(ROUND(r.amt_overdue121_150d) AS INT) AS "AmtOverdue121to150days",
+    CAST(ROUND(r.amt_overdue151_180d) AS INT) AS "AmtOverdue151to180days",
+    CAST(ROUND(r.amt_overdue181_d) AS INT) AS "AmtOverdue181orMore",
+    '101' as "LegalFlag",
+    CASE 
+    WHEN ml.accountState = 'CLOSED' THEN 'C'
+    WHEN (ml.accountState = 'CLOSED_WRITTEN_OFF' AND abs(recovered.revised_writeoff_amount) < 10) THEN 'C'
+    WHEN (ml.accountState = 'CLOSED_WRITTEN_OFF' AND abs(recovered.revised_writeoff_amount) > 10) THEN 'W'
+    WHEN (ml.accountState = 'CLOSED_WRITTEN_OFF' AND recovered.revised_writeoff_amount IS NULL) THEN 'W'
+    ELSE 'A' 
+    END as "FacilityStatusCode",
+    TO_CHAR(CURRENT_DATE,'YYYYMMDD') as "FacilityStatusDate",
+    TO_CHAR(IFF(ml.accountstate IN ('CLOSED', 'CLOSED_WRITTEN_OFF'), ml.closeddate, NULL), 'YYYYMMDD') as "ClosedDate",
+    CASE WHEN ml.loan_repaid_date < ml.last_expected_repayment THEN 'F' ELSE '' END as "ClosureReason",
+    lt.WRITTEN_OFF_AMOUNT as "WrittenOffAmt",
+    CASE
+        WHEN lt.WRITTEN_OFF_AMOUNT IS NOT NULL AND lt.total_repayment_amount > 0 THEN 'F'
+        WHEN lt.WRITTEN_OFF_AMOUNT IS NOT NULL THEN 'F'
+        ELSE ''
+    END as "ReasonForWrittenOff",
+    '' as "DateRestructured",
+    '' as "ReasonForRestructure",
+    '102' as "CreditCollateralInd",
+    '' as "SecurityType",
+    '' as "NatureOfCharge",
+    '' as "SecurityValue",
+    '' as "CollRegRefNum",
+    '' as "SpecialCommentsCode",
+    '103' as "NatureofGuarantor",
+    '' as "NameofComGuarantor",
+    '' as "BusRegOfGuarantor",
+    '' as "G1Surname",
+    '' as "G1FirstName",
+    '' as "G1MiddleNames",
+    '' as "G1NatID",
+    '' as "G1VotID",
+    '' as "G1DrivLic",
+    '' as "G1PassNum",
+    '' as "G1SSN",
+    '' as "G1Gender",
+    '' as "G1DOB",
+    '' as "G1Add1",
+    '' as "G1Add2",
+    '' as "G1Add3",
+    '' as "G1HomeTel",
+    '' as "G1WorkTel",
+    '' as "G1Mobile",
+    '' as "G2Surname",
+    '' as "G2FirstName",
+    '' as "G2MiddleNames",
+    '' as "G2NatID",
+    '' as "G2VotID",
+    '' as "G2DrivLic",
+    '' as "G2PassNum",
+    '' as "G2SSN",
+    '' as "G2Gender",
+    '' as "G2DOB",
+    '' as "G2Add1",
+    '' as "G2Add2",
+    '' as "G2Add3",
+    '' as "G2HomeTel",
+    '' as "G2WorkTel",
+    '' as "G2Mobile",
+    '' as "G3Surname",
+    '' as "G3FirstName",
+    '' as "G3MiddleNames",
+    '' as "G3NatID",
+    '' as "G3VotID",
+    '' as "G3DrivLic",
+    '' as "G3PassNum",
+    '' as "G3SSN",
+    '' as "G3Gender",
+    '' as "G3DOB",
+    '' as "G3Add1",
+    '' as "G3Add2",
+    '' as "G3Add3",
+    '' as "G3HomeTel",
+    '' as "G3WorkTel",
+    '' as "G3Mobile",
+    '' as "G4Surname",
+    '' as "G4FirstName",
+    '' as "G4MiddleNames",
+    '' as "G4NatID",
+    '' as "G4VotID",
+    '' as "G4DrivLic",
+    '' as "G4PassNum",
+    '' as "G4SSN",
+    '' as "G4Gender",
+    '' as "G4DOB",
+    '' as "G4Add1",
+    '' as "G4Add2",
+    '' as "G4Add3",
+    '' as "G4HomeTel",
+    '' as "G4WorkTel",
+    '' as "G4Mobile"
+FROM base_loans ml
+LEFT JOIN recovered on ml.loan_id = recovered.loanid
+INNER JOIN mambu.client c ON ml.client_key = c.encodedkey
+INNER JOIN ml.repayment r ON ml.loan_key = r.loan_key
+LEFT JOIN ml.next_repayment nr ON ml.loan_key = nr.loan_key
+INNER JOIN ml.LOAN_TRANSACTION_SUMMARY lt ON ml.loan_key = lt.loan_key
+LEFT JOIN client_identifications ci ON c.encodedkey = ci.clientkey
+LEFT JOIN mambu.address a ON c.ENCODEDKEY = a.PARENTKEY
+LEFT JOIN custom_field_values cfv ON c.ENCODEDKEY = cfv.PARENTKEY
+LEFT JOIN employment_classifications ec ON c.encodedkey = ec.client_key
+LEFT JOIN income_classifications ic ON c.ENCODEDKEY = ic.PARENTKEY
+order by "FacilityAccNum"

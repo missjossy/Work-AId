@@ -1,0 +1,7 @@
+RETENTION_STATUS,ENGAGEMENT_SEGMENT,SUM(CLIENT_COUNT)
+churned,high_engagement,1944
+churned,low_engagement,157
+churned,medium_engagement,1266
+retained,high_engagement,8346
+retained,low_engagement,1854
+retained,medium_engagement,7395
