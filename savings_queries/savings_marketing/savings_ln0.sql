@@ -16,40 +16,31 @@ select  cl.id as client_id,
         AND (wallet_id.value not in ('233552602681', '233243630046', '233245822584' , '23346722591', '233257806345') or wallet_id.value is null)
         AND sa.accountstate != 'WITHDRAWN'
 ),
--- Get all users who signed up in the date range
-signup_users as (
-    SELECT 
-        date_trunc('{{sacle}}', u.CREATED_TIMESTAMP) as signup_date,
-        u.BANKING_PLATFORM_ID as client_id
-    FROM GHANA_PROD.BANKING_SERVICE."USER" u
-    WHERE date(u.CREATED_TIMESTAMP) BETWEEN '{{ Range.start }}' and '{{ Range.end }}'
-),
+savings_client as(
 
--- Get first savings account creation date for each client
-first_savings as (
-    SELECT 
-        cl.id as client_id,
-        MIN(sa.creationdate) as first_savings_date
+    select cl.id as client_id, 
+    sa.creationdate as first_creation_date,
+    case when loans.client_id is null then cl.id else null end as without_loan,
+    case when loans.client_id is not null then cl.id else null end as with_loan,
+    case when loans.client_id is not null and first_creation_date < li.disbursementdate then cl.id else null end as savings_to_ln0
     FROM GHANA_PROD.MAMBU.SAVINGSACCOUNT sa
-    LEFT JOIN MAMBU.CLIENT cl on cl.ENCODEDKEY = sa.ACCOUNTHOLDERKEY
-    LEFT JOIN GHANA_PROD.MAMBU.CUSTOMFIELDVALUE wallet_id ON sa.ENCODEDKEY = wallet_id.PARENTKEY AND wallet_id.CUSTOMFIELDKEY = (SELECT encodedkey FROM GHANA_PROD.MAMBU.CUSTOMFIELD WHERE id = 'ACCOUNT_NUMBER_TRANSACTION_CHANN')
-    WHERE sa.ACCOUNTTYPE = 'REGULAR_SAVINGS'
-        AND sa.accountstate != 'WITHDRAWN'
+         LEFT JOIN MAMBU.CLIENT cl on cl.ENCODEDKEY = sa.ACCOUNTHOLDERKEY
+        LEFT JOIN (SELECT DISTINCT CLIENT_ID FROM GHANA_PROD.ML.LOAN_INFO_TBL WHERE DISBURSEMENTDATE IS NOT NULL) loans ON cl.ID = loans.CLIENT_ID
+        LEFT JOIN (
+        select * from ml.loan_info_tbl
+        where disbursementdate is not null
+        qualify row_number() over(partition by client_id order by disbursementdate asc) = 1
+        ) li on li.client_id = cl.id
+        LEFT JOIN GHANA_PROD.MAMBU.CUSTOMFIELDVALUE wallet_id ON sa.ENCODEDKEY = wallet_id.PARENTKEY AND wallet_id.CUSTOMFIELDKEY = (SELECT encodedkey FROM GHANA_PROD.MAMBU.CUSTOMFIELD WHERE id = 'ACCOUNT_NUMBER_TRANSACTION_CHANN')
+        WHERE sa.ACCOUNTTYPE = 'REGULAR_SAVINGS'
         AND DATE(sa.creationdate) >= date('2025-04-03')
-        AND (cl.MOBILEPHONE1 not in ('233552602681', '233243630046', '233245822584', '23346722591', '233257806345') OR cl.MOBILEPHONE1 is null)
-        AND (cl.MOBILEPHONE2 not in ('233552602681', '233243630046', '233245822584', '23346722591', '233257806345') OR cl.MOBILEPHONE2 is null)
-        AND (wallet_id.value not in ('233552602681', '233243630046', '233245822584', '23346722591', '233257806345') OR wallet_id.value is null)
-    GROUP BY cl.id
-),
-
--- Get first loan disbursement date for each client
-first_loan as (
-    SELECT 
-        CLIENT_ID,
-        MIN(DISBURSEMENTDATE) as first_loan_date
-    FROM GHANA_PROD.ML.LOAN_INFO_TBL
-    WHERE DISBURSEMENTDATE IS NOT NULL
-    GROUP BY CLIENT_ID
+        AND (cl.MOBILEPHONE1 not in ('233552602681', '233243630046', '233245822584' , '23346722591', '233257806345') or cl.MOBILEPHONE1 is null)
+        AND (cl.MOBILEPHONE2 not in ('233552602681', '233243630046', '233245822584' , '23346722591', '233257806345') or cl.MOBILEPHONE2 is null)
+        AND (wallet_id.value not in ('233552602681', '233243630046', '233245822584' , '23346722591', '233257806345') or wallet_id.value is null)
+        AND sa.accountstate != 'WITHDRAWN'
+        qualify row_number() over (partition by cl.id order by sa.creationdate asc) = 1
+        order by client_id
+        --limit 1000
 ),
 
 new_savers AS ( 
@@ -166,8 +157,8 @@ ln0_loan_only_daily as (
     FROM GHANA_PROD.ML.LOAN_INFO_TBL ml
     LEFT JOIN (
         SELECT DISTINCT cl.id as client_id
-FROM GHANA_PROD.MAMBU.SAVINGSACCOUNT sa 
-LEFT JOIN MAMBU.CLIENT cl on cl.ENCODEDKEY = sa.ACCOUNTHOLDERKEY
+        FROM GHANA_PROD.MAMBU.SAVINGSACCOUNT sa
+        LEFT JOIN MAMBU.CLIENT cl on cl.ENCODEDKEY = sa.ACCOUNTHOLDERKEY
         LEFT JOIN GHANA_PROD.MAMBU.CUSTOMFIELDVALUE wallet_id ON 
             sa.ENCODEDKEY = wallet_id.PARENTKEY AND 
             wallet_id.CUSTOMFIELDKEY = (SELECT encodedkey FROM GHANA_PROD.MAMBU.CUSTOMFIELD WHERE id = 'ACCOUNT_NUMBER_TRANSACTION_CHANN')
@@ -193,78 +184,45 @@ ln0_loan_only as (
 ),
 
 
--- Get first loan disbursement date for each client
-first_loan as (
-    SELECT 
-        CLIENT_ID,
-        MIN(DISBURSEMENTDATE) as first_loan_date
-    FROM GHANA_PROD.ML.LOAN_INFO_TBL
-    WHERE DISBURSEMENTDATE IS NOT NULL
-    GROUP BY CLIENT_ID
-),
-
--- Calculate metrics for those who created savings accounts on each date
-savings_metrics as (
-    SELECT 
-        date_trunc('{{sacle}}', sd.creationdate) as creation_date,
-        COUNT(DISTINCT CASE WHEN sd.first_creation_date = sd.creationdate THEN sd.client_id END) as new_savers,
-        COUNT(DISTINCT CASE WHEN sd.first_creation_date < sd.creationdate THEN sd.client_id END) as returning_savers,
-        COUNT(DISTINCT CASE 
-            WHEN sd.first_creation_date = sd.creationdate 
-            AND (fl.first_loan_date IS NULL OR fl.first_loan_date > sd.creationdate)
-            THEN sd.client_id 
-        END) as savers_without_loan,
-        COUNT(DISTINCT CASE 
-            WHEN sd.first_creation_date = sd.creationdate 
-            AND fl.first_loan_date IS NOT NULL 
-            THEN sd.client_id 
-        END) as savers_with_loan,
-        COUNT(DISTINCT CASE WHEN sd.first_creation_date = sd.creationdate 
-            AND fl.first_loan_date IS NOT NULL 
-            AND sd.creationdate < fl.first_loan_date
-            THEN sd.client_id 
-        END) as savings_first_then_loan
-    FROM savings_data sd
-    LEFT JOIN first_loan fl ON sd.client_id = fl.CLIENT_ID
-    WHERE date(sd.creationdate) BETWEEN date('{{ Range.start }}') and date('{{ Range.end }}')
-    GROUP BY date_trunc('{{sacle}}', sd.creationdate)
-),
-
-sign_ups as (
-    select date_trunc('{{sacle}}', CREATED_TIMESTAMP) date_, count(*) as sign_ups
-    from (
-        SELECT DISTINCT CREATED_TIMESTAMP, USER.ID
-        FROM GHANA_PROD.BANKING_SERVICE."USER" 
-        WHERE date(CREATED_TIMESTAMP) BETWEEN '{{ Range.start }}' and '{{ Range.end }}'
-    )
-    group by date_
-    order by date_
-),
-
-cumulative_signups as (
-    SELECT 
-        date_,
-        SUM(sign_ups) OVER (ORDER BY date_) as cumulative_signups
-    FROM sign_ups
+savings_loan_sum as (
+select date_trunc('{{sacle}}', first_creation_date) as date_,
+count( with_loan) as with_ln0,
+count(without_loan) as without_ln0,
+count(savings_to_ln0) as savings_before_ln0
+from savings_client
+where date_ BETWEEN date('{{ Range.start }}') and date('{{ Range.end }}')
+group by 1
 )
+-- select * from savings_loan_sum
+-- where date_ BETWEEN date('{{ Range.start }}') and date('{{ Range.end }}')
+-- select distinct client_id, first_creation_date, without_loan, with_loan
+-- from savings_data
+-- order by client_id
+-- limit 1000
 
 SELECT 
-    sm.creation_date as time,
-    sm.new_savers as "New Savers",
-    sm.returning_savers as "Returning Savers",
-    au.active_accounts as "Active Users",
-    CASE WHEN au.active_accounts > 0 
-         THEN sw.accounts_no_loans / au.active_accounts * 100 
+    sign_ups.date_ as time,
+    COALESCE(new_savers.new_daily_clients, 0) as "New Savers",
+    COALESCE(returning_savers.returning_daily_clients, 0) as "Returning Savers",
+    COALESCE(active_users_by_period.active_accounts, 0) as "Active Users",
+    CASE WHEN COALESCE(active_users_by_period.active_accounts, 0) > 0 
+         THEN savings_without_loans_by_period.accounts_no_loans / active_users_by_period.active_accounts * 100 
          ELSE 0 END as "% Active Users with Savings Only",
-    CASE WHEN cs.cumulative_signups > 0 
-         THEN lo.loan_only_clients / cs.cumulative_signups * 100 
+    CASE WHEN COALESCE(cumulative_signups.cumulative_signups, 0) > 0 
+         THEN ln0_loan_only.loan_only_clients / cumulative_signups.cumulative_signups * 100 
          ELSE 0 END as "% Signups with LN0 Only",
-    sm.savers_without_loan as "Savers Without Loan",
-    sm.savers_with_loan as "Savers With Loan",
-    sm.savings_first_then_loan as "Savings First Then Loan"
-FROM savings_metrics sm
-LEFT JOIN active_users_by_period au ON au.date_ = sm.creation_date
-LEFT JOIN savings_without_loans_by_period sw ON sw.date_ = sm.creation_date
-LEFT JOIN cumulative_signups cs ON cs.date_ = sm.creation_date
-LEFT JOIN ln0_loan_only lo ON lo.date_ = sm.creation_date
-ORDER BY sm.creation_date DESC
+    COALESCE(with_ln0, 0) as "With LN0 Disbursement",
+    COALESCE(without_ln0, 0) as "Without LN0 Disbursement",
+    coalesce(savings_before_ln0, 0) as "Savings Before LN0",
+    CASE WHEN COALESCE(new_savers.new_daily_clients, 0) > 0 
+         THEN (savings_before_ln0 / new_savers.new_daily_clients) * 100 
+         ELSE 0 END as "% Savings Before LN0"
+FROM sign_ups 
+LEFT JOIN new_savers ON new_savers.date_ = sign_ups.date_
+LEFT JOIN returning_savers ON returning_savers.date_ = sign_ups.date_
+LEFT JOIN active_users_by_period ON active_users_by_period.date_ = sign_ups.date_
+LEFT JOIN savings_without_loans_by_period ON savings_without_loans_by_period.date_ = sign_ups.date_
+LEFT JOIN cumulative_signups ON cumulative_signups.date_ = sign_ups.date_
+LEFT JOIN ln0_loan_only ON ln0_loan_only.date_ = sign_ups.date_
+LEFT JOIN savings_loan_sum ON savings_loan_sum.date_ = sign_ups.date_
+ORDER BY time DESC

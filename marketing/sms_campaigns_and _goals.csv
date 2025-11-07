@@ -1,0 +1,211 @@
+Date,Campaign Name,Broadcast Name,Relevant Query,Goal,Text
+Oct-1,FidoBiz KYB,FidoBiz KYB without Doc Submitted - Oct 1,https://redash.fidocredit.com/queries/4726/source?p_range.start=2024-09-01&p_range.end=2025-01-31#10154,"When the user does:
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","Want extra new month cash? FidoBiz offers up to GHS 8,200. Upload a valid document here: https://i.fido.money/mS7prRTF To stop msgs, dial *998*13#"
+Oct-1,KYC,KYC verified with out Survey Completion - Oct 1,https://redash.fidocredit.com/queries/3306/source?p_range.start=2024-07-01&p_range.end=2024-08-01&p_Margins%20Status=%5B%22NULL%22%5D#7255,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Get your cash boost. Finish your signup for up to GHS 8,200 with Fido. Get in: https://i.fido.money/KwAgInLo To stop msgs, dial *998*13#"
+Oct-1,Non-eligible to Eligible,Potential Non-Eligible - Oct 1,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra new month cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/XhQjdGMq To unsubscribe, dial *998*13#"
+Oct-1,Savings,EasySave Blast - Oct 1,https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created",Your money should work for you. Sign up for EasySave and earn up to 10% interest. Zero fees. Powered by Access Bank: https://b.fido.money/save
+Oct-2,Non-eligible to Eligible,Potential Non-Eligible - Oct 2,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra new month cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/UFNZjABr To unsubscribe, dial *998*13#"
+Oct-2,USSD Dropoff,USSD Dropoffs - Oct 2,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Need extra cash? FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/0Hdb6MT3 To stop msgs, dial *998*13#"
+Oct-2,KYC USSD,KYC USSD Boost - Oct 2,https://redash.fidocredit.com/queries/7076/source?p_date.start=2025-06-01&p_date.end=2025-11-05,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Want extra cash? Quickly verify your ID with MTN & FIDO. Dial *998*88# and follow the instructions! Easy! To unsubscribe, dial *998*13#"
+Oct-2,Savings,EasySave Blast - Oct 2,https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created",Your money should work for you. Sign up for EasySave and earn up to 10% interest. Zero fees. Powered by Access Bank: https://b.fido.money/save
+Oct-3,USSD Dropoff,USSD Dropoffs - Oct 3,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Need extra cash? FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/RgevMT6u To stop msgs, dial *998*13#"
+Oct-3,Non-eligible to Eligible,Potential Non-Eligible - Oct 3,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/ur53Jts0 To unsubscribe, dial *998*13#"
+Oct-3,KYC USSD,KYC USSD Boost - Oct 3,https://redash.fidocredit.com/queries/7076/source?p_date.start=2025-06-01&p_date.end=2025-11-05,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Want extra cash? Quickly verify your ID with MTN & FIDO. Dial *998*88# and follow the instructions! Easy! To unsubscribe, dial *998*13#"
+Oct-3,KYC,KYC verified with out Survey Completion - Oct 3,https://redash.fidocredit.com/queries/3306/source?p_range.start=2024-07-01&p_range.end=2024-08-01&p_Margins%20Status=%5B%22NULL%22%5D#7255,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Get your cash boost. Finish your signup for up to GHS 8,200 with Fido. Get in: https://i.fido.money/XFsauM0T To stop msgs, dial *998*13#"
+Oct-3,FidoBiz KYB,FidoBiz KYB without Doc Submitted - Oct 3,https://redash.fidocredit.com/queries/4726/source?p_range.start=2024-09-01&p_range.end=2025-01-31#10154,"When the user does:
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","Want extra cash? FidoBiz offers up to GHS 8,200. Upload a valid document here: https://i.fido.money/hRhiUe2C To stop msgs, dial *998*13#"""
+Oct-3,Savings,EasySave Blast - Oct 3,https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created",Your money should work for you. Sign up for EasySave and earn up to 10% interest. Zero fees. Powered by Access Bank: https://b.fido.money/save
+Oct-3,Referrals,Referral Campaign - Oct 3,https://redash.fidocredit.com/queries/4472/source?p_min_ln=3&p_max_ln=7&p_range.start=2025-04-01&p_range.end=2025-07-31&p_min_score=250#9665,"ME - Referral
+event_description ∋ Referee Register Link Activated",Make money from referrals. Earn GHS 55 when your friend takes a FIDO loan using your code. They get GHS 15 too. Start: https://app.fido.money/invite-friends
+Oct-4,Non-eligible to Eligible,Potential Non-Eligible - Oct 4,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/Gi60NJRx To unsubscribe, dial *998*13#"
+Oct-5,Non-eligible to Eligible,Potential Non-Eligible - Oct 5,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/eVpznwXD To unsubscribe, dial *998*13#"
+Oct-5,KYC,KYC verified with out Survey Completion - Oct 5,https://redash.fidocredit.com/queries/3306/source?p_range.start=2024-07-01&p_range.end=2024-08-01&p_Margins%20Status=%5B%22NULL%22%5D#7255,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Get your cash boost. Finish your signup for up to GHS 8,200 with Fido. Get in: https://i.fido.money/fkIzVq1h To stop msgs, dial *998*13#"
+Oct-5,FidoBiz Approved,FidoBiz Approved but no L0 - Oct 5,"https://redash.fidocredit.com/queries/5136/source?p_range.start=2024-10-31&p_range.end=2025-10-31&p_Client_Type=%5B%22New%22,%22Migrated-New%22,%22Migrated-Old%22%5D#11066","When a user does
+BE_LOAN_FIRST_DISBURSEMENT
+loan_product ∋ UCBLL","Get your cash. You're already approved for an instant FidoBiz loan. Withdraw at https://i.fido.money/F1MQAyFF . To unsubscribe, dial *998*13#"
+Oct-6,Savings,EasySave Blast - Oct 6,https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created",Your money should work for you. Sign up for EasySave and earn up to 10% interest. Zero fees. Powered by Access Bank: https://b.fido.money/save
+Oct-6,Non-eligible to Eligible,Potential Non-Eligible - Oct 6,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/2fiNznaM To unsubscribe, dial *998*13#"
+Oct-6,Eligible,Eligible but no L0 - Oct 6,"https://redash.fidocredit.com/queries/5136/source?p_range.start=2024-10-31&p_range.end=2025-10-31&p_Client_Type=%5B%22New%22,%22Migrated-New%22,%22Migrated-Old%22%5D#11066","When a user does
+BE_LOAN_FIRST_DISBURSEMENT
+loan_product ∋ UCBLL","Ready for your cash? You are already eligible for a FIDO loan. Withdraw here: https://i.fido.money/AKHAmGGl . To unsubscribe, dial *998*13#"
+Oct-7,USSD Dropoff,USSD Dropoffs - Oct 7,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Need extra cash? FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/1jPDklua To stop msgs, dial *998*13#"
+Oct-7,Non-eligible to Eligible,Potential Non-Eligible - Oct 7,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/6lb5ugrL To unsubscribe, dial *998*13#"
+Oct-7,Savings,EasySave Blast - Oct 7,https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created",Your money should work for you. Sign up for FIDO's EasySave and earn up to 10% interest. Zero fees. Powered by Access Bank: https://b.fido.money/save
+Oct-8,FidoBiz Referrals,FidoBiz Referral Champions - Oct 8,https://redash.fidocredit.com/queries/7090/source?p_Range.start=2025-01-01&p_Range.end=2025-10-31,FidoBiz First Disbursement,"Make good cash! Get GHS 55 per referral, gain points towards weekly prizes and a grand prize at https://i.fido.money/6IGwdjJ4 To stop msgs, dial *998*13#"
+Oct-8,FidoBiz LPs,Landing Page to App Dropoffs - Oct 8,https://redash.fidocredit.com/queries/6837/source?p_start_date=2025-03-01#14810,FidoBiz First Disbursement,"Thousands of people are cashing out their FidoBiz loan of up to 8,200 GHS. You can be next. Start the process here: https://i.fido.money/fLs42Lhp"
+Oct-8,Non-eligible to Eligible,Potential Non-Eligible - Oct 8,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/1Ngq4OFu To unsubscribe, dial *998*13#"
+Oct-8,Savings,EasySave Blast - Oct 8,https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created",Your money should work for you. Sign up for EasySave and earn up to 10% interest. Zero fees. Powered by Access Bank: https://b.fido.money/save
+Oct-8,USSD Dropoff,USSD Dropoffs - Oct 8,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Need extra cash? FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/PKIWQfGM To stop msgs, dial *998*13#"
+Oct-8,FidoBiz Cross Sell,FidoBiz Cross Sell (L4+) - Oct 8,https://redash.fidocredit.com/queries/4472/source?p_min_ln=3&p_max_ln=7&p_range.start=2025-04-01&p_range.end=2025-07-31&p_min_score=250#9665,"When a user does
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","Upgrade for more cash! You already qualify for more with FidoBiz, up to GHS 8,200. Step up: https://i.fido.money/vATsffao To stop msgs, dial *998*13#"
+Oct-8,KYC,KYC verified with out Survey Completion - Oct 8,https://redash.fidocredit.com/queries/3306/source?p_range.start=2024-07-01&p_range.end=2024-08-01&p_Margins%20Status=%5B%22NULL%22%5D#7255,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Get your cash boost. Finish your signup for up to GHS 8,200 with Fido. Get in: https://i.fido.money/dqv4qVZ7 To stop msgs, dial *998*13#"
+Oct-8,KYC USSD,KYC USSD Boost - Oct 8,https://redash.fidocredit.com/queries/7076/source?p_date.start=2025-06-01&p_date.end=2025-11-05,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Want extra cash? Quickly verify your ID with MTN & FIDO. Dial *998*88# and follow the instructions! Easy! To unsubscribe, dial *998*13#"
+Oct-9,Non-eligible to Eligible,Potential Non-Eligible - Oct 9,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/F91SHMF7 To unsubscribe, dial *998*13#"
+Oct-9,USSD Dropoff,USSD Dropoffs - Oct 9,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Need extra cash? FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/BulD78ep To stop msgs, dial *998*13#"
+Oct-9,FidoBiz Cross Sell,FidoBiz Cross Sell (New) - Oct 9,https://redash.fidocredit.com/queries/4472/source?p_min_ln=3&p_max_ln=7&p_range.start=2025-04-01&p_range.end=2025-07-31&p_min_score=250#9665,"When a user does
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","Get extra. Step things up and get up to GHS 8,200 with FidoBiz. Upgrade to FidoBiz here: https://i.fido.money/YnpXuLTf To stop msgs, dial *998*13#"
+Oct-9,FidoBiz Non-eligible to Eligible,FidoBiz Non-Eligible to Eligible - Oct 9,"https://redash.fidocredit.com/queries/5459/source?p_Date.start=2024-11-05&p_Date.end=2025-11-05&p_Client_Type=%5B%22New%22,%22Migrated-Old%22,%22Migrated-New%22%5D#11691","When a user does
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","Take this chance! Get back in with a valid document (like MoMo statement) for up to GHS 8,200: https://i.fido.money/SJQYTVre To stop msgs, dial *998*13#"
+Oct-9,KYC USSD,KYC USSD Boost - Oct 9,https://redash.fidocredit.com/queries/7076/source?p_date.start=2025-06-01&p_date.end=2025-11-05,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Want extra cash? Quickly verify your ID with MTN & FIDO. Dial *998*88# and follow the instructions! Easy! To unsubscribe, dial *998*13#"
+Oct-9,KYC,KYC verified with out Survey Completion - Oct 9,https://redash.fidocredit.com/queries/3306/source?p_range.start=2024-07-01&p_range.end=2024-08-01&p_Margins%20Status=%5B%22NULL%22%5D#7255,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Get your cash boost. Finish your signup for up to GHS 8,200 with Fido. Get in: https://i.fido.money/VesgQiOy To stop msgs, dial *998*13#"
+Oct-9,Savings,EasySave Blast - Oct 9,https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created",Grow your money! Sign up for Fido's EasySave and earn up to 10% interest. Zero fees charged. Powered by Access Bank: https://b.fido.money/save
+Oct-10,Non-eligible to Eligible,Potential Non-Eligible - Oct 10,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/LShf98xJ To unsubscribe, dial *998*13#"
+Oct-10,USSD Dropoff,USSD Dropoffs - Oct 10,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Need extra cash? FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/PY1iK4i1 To stop msgs, dial *998*13#"
+Oct-21,FidoBiz LPs,Landing Page to App Dropoffs - Oct 21,https://redash.fidocredit.com/queries/6837/source?p_start_date=2025-03-01#14810,FidoBiz First Disbursement,"Thousands of people are cashing out their FidoBiz loan of up to 8,200 GHS. You can be next. Start the process here: https://i.fido.money/SCRQomVz"
+Oct-21,USSD Dropoff,USSD Dropoffs - Oct 21,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Fill your MoMo wallet. FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/ERO68pxm - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, All Industries, Active/Active-in-arrears, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your income, daily up to 10% p/a. Deposit GHS 50 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Banking/Financial Services, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your income, daily up to 10% p/a. Deposit GHS 50 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Industry/Manufacturing, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your production funds, daily up to 10% p/a. Deposit GHS 150 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Agriculture, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your daily sales, daily up to 10% p/a. Deposit GHS 30 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Domestic Services, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your client earnings, daily up to 10% p/a. Deposit GHS 20 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Healthcare, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your shift income or emergency fund, daily up to 10% p/a. Deposit GHS 100 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Construction, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your project cash or job funds, daily up to 10% p/a. Deposit GHS 200 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Trade Retail, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your daily sales or shop profits, daily up to 10% p/a. Deposit GHS 30 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Beauty, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your client earnings daily up to 10% p/a. Deposit GHS 20 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,Savings,"EasySave Blast {Oct 1- 20 data, Education, Closed, Age 25 - 34, Greater Accra} - Oct 21",https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","EasySave grows your salary or fees daily up to 10% p/a. Deposit GHS 50 now at https://b.fido.money/save - To stop msgs, dial *998*13#"
+Oct-21,FidoBiz Cross Sell,FidoBiz Cross Sell (L4+) - Oct 21,https://redash.fidocredit.com/queries/4472/source?p_min_ln=3&p_max_ln=7&p_range.start=2025-04-01&p_range.end=2025-07-31&p_min_score=250#9665,"When a user does
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","You're in control. Upgrade to FidoBiz for more cash up to GHS 8,200. Start with a valid doc: https://i.fido.money/A4DDOf4J - To stop msgs, dial *998*13#"
+Oct-20,KYC USSD,KYC USSD Boost - Oct 20,https://redash.fidocredit.com/queries/7076/source?p_date.start=2025-06-01&p_date.end=2025-11-05,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Fill your MoMo wallet. Quickly verify your ID with MTN & FIDO. Dial *998*88# and follow the instructions! Easy! To unsubscribe, dial *998*13#"
+Oct-20,USSD Dropoff,USSD Dropoffs - Oct 20,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Fill your MoMo wallet. FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/5P70OaLr - To stop msgs, dial *998*13#"
+Oct-20,Non-eligible to Eligible,Potential Non-Eligible - Oct 20,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Fill your MoMo wallet. Upload a MoMo statement for your FIDO loan approval in minutes: https://i.fido.money/UvyG1wTR To unsubscribe, dial *998*13#"
+Oct-20,Eligible,Eligible but no L0 - Oct 20,"https://redash.fidocredit.com/queries/5136/source?p_range.start=2024-10-31&p_range.end=2025-10-31&p_Client_Type=%5B%22New%22,%22Migrated-New%22,%22Migrated-Old%22%5D#11066","When a user does
+BE_LOAN_FIRST_DISBURSEMENT
+loan_product ∋ UCBLL","Fill your MoMo wallet. You are already eligible for a FIDO loan. Cash out at https://i.fido.money/41YhVq43 . To unsubscribe, dial *998*13#"
+Oct-20,FidoBiz Cross Sell,FidoBiz Cross Sell (L0 - L3) - Oct 20,https://redash.fidocredit.com/queries/4472/source?p_min_ln=3&p_max_ln=7&p_range.start=2025-04-01&p_range.end=2025-07-31&p_min_score=250#9665,"When a user does
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","You're in control. Upgrade to FidoBiz for more cash up to GHS 8,200. Start with a valid doc: https://i.fido.money/xUS873Y9 - To stop msgs, dial *998*13#"
+Oct-19,USSD Dropoff,USSD Dropoffs - Oct 19,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Fill your MoMo wallet. FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/d9EM5uHq - To stop msgs, dial *998*13#"
+Oct-18,FidoBiz Approved,FidoBiz Approved but no L0 - Oct 18,"https://redash.fidocredit.com/queries/5136/source?p_range.start=2024-10-31&p_range.end=2025-10-31&p_Client_Type=%5B%22New%22,%22Migrated-New%22,%22Migrated-Old%22%5D#11066","When a user does
+BE_LOAN_FIRST_DISBURSEMENT
+loan_product ∋ UCBLL","Fill your MoMo wallet. You're already approved for an instant FidoBiz loan. Withdraw at https://i.fido.money/GHAvwG9d . To unsubscribe, dial *998*13#"
+Oct-18,USSD Dropoff,USSD Dropoffs - Oct 18,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Fill your MoMo wallet. FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/FvuWmpep - To stop msgs, dial *998*13#"
+Oct-18,Non-eligible to Eligible,Potential Non-Eligible - Oct 18,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Fill your MoMo wallet. Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/M9OLoZqX To unsubscribe, dial *998*13#"
+Oct-17,KYC,KYC verified with out Survey Completion - Oct 17,https://redash.fidocredit.com/queries/3306/source?p_range.start=2024-07-01&p_range.end=2024-08-01&p_Margins%20Status=%5B%22NULL%22%5D#7255,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Fill your MoMo wallet. Finish your signup for up to GHS 8,200 with FIDO. Get in: https://i.fido.money/W54LaK5T - To stop msgs, dial *998*13#"
+Oct-17,Non-eligible to Eligible,Potential Non-Eligible - Oct 17,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Fill your MoMo wallet. Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/Cf7yxX71 To unsubscribe, dial *998*13#"
+Oct-17,USSD Dropoff,USSD Dropoffs - Oct 17,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Fill your MoMo wallet. FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/8jrbNfyq - To stop msgs, dial *998*13#"
+Oct-17,Savings,EasySave Blast - Oct 17b,https://redash.fidocredit.com/queries/7588/source?p_score_limit=0&p_Range.start=2025-05-01&p_Range.end=2025-07-31&p_accountstates=%5B%22CLOSED%22%5D#16495,"When a user does
+ME - Savings
+event_description ∋ Account Created","Park your funds in EasySave by Fido, while you prep the next step. Earn daily interest up to 10%/yr. One tap to deposit: https://b.fido.money/save"
+Oct-17,KYC USSD,KYC USSD Boost - Oct 17,https://redash.fidocredit.com/queries/7076/source?p_date.start=2025-06-01&p_date.end=2025-11-05,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Fill your MoMo wallet. Quickly verify your ID with MTN & FIDO. Dial *998*88# and follow the instructions! Easy! To unsubscribe, dial *998*13#"
+Oct-16,Non-eligible to Eligible,Potential Non-Eligible - Oct 16,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Fill your MoMo wallet. Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/IyANmQhy To unsubscribe, dial *998*13#"
+Oct-16,FidobIZ Non-eligible to Eligible,FidoBiz Non-Eligible to Eligible - Oct 16,"https://redash.fidocredit.com/queries/5459/source?p_Date.start=2024-11-05&p_Date.end=2025-11-05&p_Client_Type=%5B%22New%22,%22Migrated-Old%22,%22Migrated-New%22%5D#11691","When a user does
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","Fill your MoMo wallet. Upload a valid document (like MoMo statement) for up to GHS 8,200: https://i.fido.money/mHBRBftx To stop msgs, dial *998*13#"
+Oct-16,USSD Dropoff,USSD Dropoffs - Oct 16,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Fill your MoMo wallet. FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/vjhyIrOf To stop msgs, dial *998*13#"
+Oct-15,FidoBiz Cross Sell,FidoBiz Cross Sell (L0 - L3) - Oct 15,https://redash.fidocredit.com/queries/4472/source?p_min_ln=3&p_max_ln=7&p_range.start=2025-04-01&p_range.end=2025-07-31&p_min_score=250#9665,"When a user does
+BE_FIDOBIZ_SCORE_DOCUMENT_STATUS_EVENT
+updated_status ∋ APPROVED","Your FidoBiz upgrade gets you more cash up to GHS 8,200. Start with a valid document: https://i.fido.money/8q0bNGRu - To stop msgs, dial *998*13#"
+Oct-15,KYC USSD,KYC USSD Boost - Oct 15,https://redash.fidocredit.com/queries/7076/source?p_date.start=2025-06-01&p_date.end=2025-11-05,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Want extra cash? Quickly verify your ID with MTN & FIDO. Dial *998*88# and follow the instructions! Easy! To unsubscribe, dial *998*13#"
+Oct-15,USSD Dropoff,USSD Dropoffs - Oct 15,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Need extra cash? FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/77hSy9oo To stop msgs, dial *998*13#"
+Oct-15,Non-eligible to Eligible,Potential Non-Eligible - Oct 15,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/dCbxt9ep To unsubscribe, dial *998*13#"
+Oct-15,KYC,KYC verified with out Survey Completion - Oct 15,https://redash.fidocredit.com/queries/3306/source?p_range.start=2024-07-01&p_range.end=2024-08-01&p_Margins%20Status=%5B%22NULL%22%5D#7255,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Get your cash boost. Finish your signup for up to GHS 8,200 with FIDO. Get in: https://i.fido.money/SmewP42C - To stop msgs, dial *998*13#"
+Oct-14,USSD Dropoff,USSD Dropoffs - Oct 14,https://redash.fidocredit.com/queries/5010/source?p_Dial%20Date.start=2025-05-01&p_Dial%20Date.end=2025-05-31&p_user_stage=%5B%22None%22%5D#10779,When a user gets their first disbursement (L0),"Need extra cash? FIDO offers up to GHS 8,200 in a few simple steps. Start here: https://i.fido.money/Ph1KvDk3 To stop msgs, dial *998*13#"
+Oct-14,KYC,KYC verified with out Survey Completion - Oct 14,https://redash.fidocredit.com/queries/3306/source?p_range.start=2024-07-01&p_range.end=2024-08-01&p_Margins%20Status=%5B%22NULL%22%5D#7255,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Get your cash boost. Finish your signup for up to GHS 8,200 with FIDO. Get in: https://i.fido.money/gWt4gWPA - To stop msgs, dial *998*13#"
+Oct-14,KYC USSD,KYC USSD Boost - Oct 14,https://redash.fidocredit.com/queries/7076/source?p_date.start=2025-06-01&p_date.end=2025-11-05,"When a user does
+BE_KYC_VERIFICATION_RESULT
+status = succeeded","Want extra cash? Quickly verify your ID with MTN & FIDO. Dial *998*88# and follow the instructions! Easy! To unsubscribe, dial *998*13#"
+Oct-14,Non-eligible to Eligible,Potential Non-Eligible - Oct 14,https://redash.fidocredit.com/queries/6760/source?p_range.start=2025-08-01&p_range.end=2025-09-30#14637,"When a user does
+BE_FIDOSCORE_SCORE_CALCULATED
+score > 249","Get extra cash! Upload a MoMo statement for your loan approval in just minutes: https://i.fido.money/YxVOSBUH To unsubscribe, dial *998*13#"
+Oct-14,Referrals,Referral Campaign - Oct 14,https://redash.fidocredit.com/queries/4472/source?p_min_ln=3&p_max_ln=7&p_range.start=2025-04-01&p_range.end=2025-07-31&p_min_score=250#9665,"ME - Referral
+event_description ∋ Referee Register Link Activated",Make money from referrals. Earn GHS 55 when your friend takes a FIDO loan using your code. They get GHS 15 too. Start: https://app.fido.money/invite-friends
